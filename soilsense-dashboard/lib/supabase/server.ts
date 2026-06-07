@@ -2,8 +2,20 @@ import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "./types";
+import { createMockClient, isSupabaseConfigured } from "./mock-client";
 
-export function createClient() {
+type ServerClient = ReturnType<typeof createServerClient<Database>>;
+type ServiceClient = ReturnType<typeof createSupabaseClient<Database>>;
+
+/**
+ * Falls back to an in-memory mock client when no Supabase project is
+ * configured, so the dashboard runs as a browsable prototype out of the box.
+ */
+export function createClient(): ServerClient {
+  if (!isSupabaseConfigured()) {
+    return createMockClient() as unknown as ServerClient;
+  }
+
   const cookieStore = cookies();
 
   return createServerClient<Database>(
@@ -33,7 +45,11 @@ export function createClient() {
  * (device ingestion, Claude recommendations, Twilio webhooks).
  * Never expose this client or its key to the browser.
  */
-export function createServiceClient() {
+export function createServiceClient(): ServiceClient {
+  if (!isSupabaseConfigured() || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    return createMockClient() as unknown as ServiceClient;
+  }
+
   return createSupabaseClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,

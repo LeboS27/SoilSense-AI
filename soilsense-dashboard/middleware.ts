@@ -1,8 +1,21 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { isSupabaseConfigured } from "@/lib/supabase/mock-client";
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
+
+  // Running as a prototype without a real Supabase project — skip auth
+  // redirects entirely so every page is reachable against mock data.
+  if (!isSupabaseConfigured()) {
+    const path = request.nextUrl.pathname;
+    if (path.startsWith("/login")) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/";
+      return NextResponse.redirect(url);
+    }
+    return response;
+  }
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
