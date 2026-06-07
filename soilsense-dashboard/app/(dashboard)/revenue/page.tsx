@@ -116,7 +116,7 @@ export default function RevenuePage() {
       const { data: existing } = await supabase
         .from("revenue_records")
         .select("farmer_id")
-        .eq("record_type", "subscription")
+        .eq("record_type", "rental")
         .eq("period_month", period_month)
         .eq("period_year", period_year);
       const existingIds = new Set((existing ?? []).map((r) => r.farmer_id));
@@ -125,7 +125,7 @@ export default function RevenuePage() {
         .filter((f) => !existingIds.has(f.id))
         .map((f) => ({
           farmer_id: f.id,
-          record_type: "subscription",
+          record_type: "rental",
           amount_usd: f.monthly_fee_usd,
           period_month,
           period_year,

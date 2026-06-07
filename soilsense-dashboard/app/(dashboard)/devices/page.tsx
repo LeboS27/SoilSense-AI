@@ -12,10 +12,10 @@ import { cn } from "@/lib/utils";
 
 const FILTER_CHIPS = [
   { value: "all", label: "All" },
-  { value: "online", label: "Online" },
-  { value: "offline", label: "Offline" },
-  { value: "syncing", label: "Syncing" },
-  { value: "error", label: "Error" },
+  { value: "available", label: "Available" },
+  { value: "deployed", label: "Deployed" },
+  { value: "maintenance", label: "Maintenance" },
+  { value: "retired", label: "Retired" },
 ];
 
 async function fetchDevices(): Promise<DeviceCardData[]> {

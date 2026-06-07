@@ -83,7 +83,7 @@ export async function POST(req: NextRequest) {
 
   const deviceUpdate: Record<string, unknown> = {
     last_sync_at: new Date().toISOString(),
-    status: "online",
+    status: "deployed",
   };
   if (payload.battery_level != null) deviceUpdate.battery_level = payload.battery_level;
   if (payload.signal_strength != null) deviceUpdate.signal_strength = payload.signal_strength;

@@ -1,17 +1,17 @@
 import { Badge } from "@/components/ui/Badge";
 
 const STATUS_TONE: Record<string, "green" | "grey" | "orange" | "red"> = {
-  online: "green",
-  offline: "grey",
-  syncing: "orange",
-  error: "red",
+  available: "grey",
+  deployed: "green",
+  maintenance: "orange",
+  retired: "red",
 };
 
 const STATUS_LABEL: Record<string, string> = {
-  online: "Online",
-  offline: "Offline",
-  syncing: "Syncing",
-  error: "Error",
+  available: "Available",
+  deployed: "Deployed",
+  maintenance: "Maintenance",
+  retired: "Retired",
 };
 
 export function DeviceStatusBadge({ status }: { status: string }) {

@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     message_body: body,
     language: farmer?.language ?? null,
     twilio_sid: messageSid,
-    status: "received",
+    status: null,
   });
 
   if (farmer) {
