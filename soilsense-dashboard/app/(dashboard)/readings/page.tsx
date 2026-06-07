@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import { Download, Map as MapIcon, WifiOff, Eye } from "lucide-react";
@@ -71,7 +71,7 @@ async function fetchReadings(filters: FilterState): Promise<ReadingWithRelations
 
 type SortKey = "reading_taken_at" | "farmer" | "crop" | "status";
 
-export default function ReadingsPage() {
+function ReadingsPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -333,5 +333,13 @@ export default function ReadingsPage() {
         )}
       </Card>
     </div>
+  );
+}
+
+export default function ReadingsPage() {
+  return (
+    <Suspense fallback={null}>
+      <ReadingsPageInner />
+    </Suspense>
   );
 }
